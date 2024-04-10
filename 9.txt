@@ -1,0 +1,29 @@
+import './App.css';
+import useFetch from "react-fetch-hook"; 
+function App() {
+  const { 
+    data: posts, 
+    isLoading,
+    error 
+  } = useFetch('https://jsonplaceholder.typicode.com/posts');
+
+  if (isLoading) { 
+    return <div>Loading..</div>; 
+  }
+  if (error) { 
+    return <div >Error: error fetching</div>; 
+  }
+  return (
+    <div >
+      <h1> posts of users </h1> 
+      {
+      posts.map((post) => ( 
+        <div key={post.id} >
+          <h2 >{post.id} {post.title}</h2> 
+          <p>{post.body}</p> 
+        </div>
+      ))}
+    </div>
+  );
+}
+export default App; 

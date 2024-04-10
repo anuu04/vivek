@@ -1,0 +1,113 @@
+app/js:
+import logo from './logo.svg';
+import './App.css';
+import {useState} from 'react';
+
+function App() {
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
+  const [mobile, setMobile] = useState('')
+  const [age, setAge] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+
+  function validateForm(){
+    if(firstName.length==0){
+      alert('Invalid Form, First Name can not be empty')
+      return 
+    }
+
+    if(email.length==0){
+      alert('Invalid Form, Email Address can not be empty')
+      return 
+    }
+
+    if(password.length <8){
+      alert('Invalid Form, Password must contain greater than 8 character')
+      return 
+    }
+
+    let countUpperCase=0
+    let countLowerCase=0
+    let countDigit=0
+    let countSpecialCharacters=0
+
+    for(let i=0;i<password.length;i++){
+      const specialChars = ['!','@','#','$','%','^','&','*','(',')','-','+','_','=','[','{',']','}',':',';','<','>']
+      if(specialChars.includes(password[i])){
+        countSpecialCharacters++
+      }
+      else if(!isNaN(password[i]*1)){
+        countDigit++
+      }
+      else{
+        if(password[i]==password[i].toUpperCase()){
+          countUpperCase++
+        }
+        if(password[i]==password[i].toLowerCase()){
+          countLowerCase++
+        }
+      }
+    }
+
+    if(countLowerCase == 0){
+      alert("Invalid Form, 0 low Case Character in password")
+      return
+    }
+
+    if(countUpperCase == 0){
+      alert("Invalid Form, 0 upper Case Character in password")
+      return
+    }
+    
+    if(countSpecialCharacters == 0){
+      alert("Invalid Form, 0 Special Character in password")
+      return
+    }
+
+    if(countDigit == 0){
+      alert("Invalid Form, 0 Digit in password")
+      return
+    }
+
+    alert("Form is valid")
+  }
+
+  return ( 
+    <div className="main"> 
+    <form>
+    <input placeholder = "First Name" onChange={(e) => setFirstName(e.target.value)}/>
+    <input placeholder = "Last Name" onChange={(e) => setLastName(e.target.value)}/>
+    <input placeholder = "Mobile Number" onChange={(e) => setMobile(e.target.value)}/>
+    <input placeholder = "Age" onChange={(e) => setAge(e.target.value)}/>
+    <input placeholder = "Email" onChange={(e) => setEmail(e.target.value)}/>
+    <input placeholder = "Password" onChange={(e) => setPassword(e.target.value)}/>
+
+    <button type="submit" onClick={()=> {validateForm()}}>Submit</button>
+    </form>
+   </div>
+
+  )
+}
+
+export default App;
+
+app.css:
+.main {
+  padding: 5%;
+  text-align: center;
+}
+
+input{
+  padding: 1%;
+  width: 50%;
+  margin: 1% 2%;
+}
+
+button{
+  font-weight: bold;
+  background: red;
+  border: none;
+  color: white;
+  padding: 1%;
+}

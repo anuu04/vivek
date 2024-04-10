@@ -1,0 +1,73 @@
+app.js:
+import logo from './logo.svg';
+import React,{useState} from 'react';
+import * as yup from 'yup'
+import './App.css';
+
+function App() {
+  const [firstname,setFirstName]=useState('');
+  const [lastname,setLastName]=useState('');
+  const [mobile,setMobile]=useState('');
+  const [age,setAge]=useState('');
+  const [email,setEmail]=useState('');
+  const [password,setPassword]=useState('');
+
+  const userSchema=yup.object().shape({
+    firstname :yup.string().required(),
+    lastname:yup.string(),
+    email:yup.string().email().required(),
+    password:yup.string().min(8).required(),
+    age:yup.string(),
+    mobile:yup.string(),
+  })
+  async function validateForm(){
+    let dataObject={
+      firstname:firstname,
+      lastname:lastname,
+      email:email,
+      password:password,
+      age:age,
+      mobile:mobile
+    }
+    const isValid=await userSchema.isValid(dataObject)
+    if(isValid){
+      alert('Form is valid')
+    }else{
+      alert('Form is Invalid')
+    }
+  }
+  return(
+  <div classname="main">
+    <form>
+      <input placeholder='First Name' onChange={(e)=>setFirstName(e.target.value)}/>
+      <input placeholder='Last Name' onChange={(e)=>setLastName(e.target.value)}/>
+      <input placeholder='Mobile Number' onChange={(e)=>setMobile(e.target.value)}/>
+      <input placeholder='Age' onChange={(e)=>setAge(e.target.value)}/>
+      <input placeholder='Email' onChange={(e)=>setEmail(e.target.value)}/>
+      <input placeholder='Password' onChange={(e)=>setPassword(e.target.value)}/>
+      <button type='submit' onClick={()=>{validateForm()}}>Submit</button>
+    </form>
+  </div>
+  );
+}
+
+export default App;
+
+app.css:
+.main{
+  padding: 5%;
+  text-align:center;
+}
+input{
+  padding: 1%;
+  width: 50%;
+  margin: 1% 2%;
+}
+button{
+  font-weight: bold;
+  background:red;
+  border: none;
+  color: white;
+  padding: 1%;
+}
+

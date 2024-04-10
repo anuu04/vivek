@@ -1,0 +1,53 @@
+index.html:
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHAT APP</title>
+</head>
+<body>
+    <h1>Chatting</h1>
+    <input type="text" id="message" placeholder="Enter a Message"/>
+    <button id="sendbtn">Send</button>
+    <div id="messages"></div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket=io();
+        const sendbtn=document.getElementById("sendbtn");
+        const messageInput=document.getElementById("message");
+        const allmsg=document.getElementById("messages");
+
+        socket.on("message",(message)=>{
+            const p=document.createElement("p");
+            p.innerText=message;
+            allmsg.appendChild(p);
+        })
+        sendbtn.addEventListener("click",(e)=>{
+            const message=messageInput.value;
+            console.log(message);
+            socket.emit("user-message",message);
+        });
+    </script>
+</body>
+</html>
+
+index.js:
+const http=require("http");
+const express=require("express");
+const path=require("path");
+const {Server}=require("socket.io");
+const app =express();
+const server=http.createServer(app);
+const io=new Server(server);
+
+io.on('connection',(socket)=>{
+    socket.on("user-message",(message)=>{
+        io.emit("message",message);
+    });
+});
+app.use(express.static(path.resolve("./public")));
+app.get('/',(req,res)=>{
+    return res.sendFile('/public/index.html');
+});
+server.listen(3000,()=>console.log('server started at 3000'));

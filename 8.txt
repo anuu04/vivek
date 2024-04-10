@@ -1,0 +1,20 @@
+import useSWR from 'swr';
+const fetcher = (args) => fetch(args).then((res) => res.json());
+const Swr = () => {
+  const { 
+    data: countries, 
+    error 
+  } = useSWR('https://restcountries.com/v2/all', fetcher);
+  if (error) return <div>Failed to load</div>;
+  return (
+    <div>
+      {countries && countries.map((country) => (
+        <img key={country.alpha3Code} 
+        src={country.flags.png} 
+        alt='flag' 
+        width={100} />
+      ))}
+    </div>
+  );
+};
+export default Swr;
